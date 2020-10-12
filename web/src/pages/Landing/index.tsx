@@ -3,6 +3,7 @@ import logo from '../../assets/Logo.svg'
 import { FiArrowRight } from 'react-icons/fi'
 import '../../styles/global.css'
 import './landing.css'
+import { Link } from 'react-router-dom'
 
 export default function Landing() {
   return (
@@ -18,9 +19,9 @@ export default function Landing() {
           <strong>Novo Hamburgo</strong>
           <strong>Rio Grande do Sul</strong>
         </div>
-        <a href="#" className="enter-app">
+        <Link to="/app" className="enter-app">
           <FiArrowRight size={26} color="rgba(0,0,0,0.6)" />
-        </a>
+        </Link>
       </div>
     </div>
   )
