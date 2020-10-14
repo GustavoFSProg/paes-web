@@ -2,12 +2,19 @@ import React from 'react'
 import './styles.css'
 import mapMarkerimg from '../../assets/map_marker.svg'
 import { Link } from 'react-router-dom'
-import { FiPlus } from 'react-icons/fi'
-import { Map, TileLayer } from 'react-leaflet'
+import { FiPlus, FiArrowRight } from 'react-icons/fi'
+import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
+import Leaflet from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import dotenv from 'dotenv'
+// import REACT_APP_MAPBOX_TOKEN from '../../Env'
 
-dotenv.config()
+const mapIcon = Leaflet.icon({
+  iconUrl: mapMarkerimg,
+  iconSize: [58, 68],
+  iconAnchor: [29, 68],
+
+  popupAnchor: [173, 2],
+})
 
 export default function OrphanagesMap() {
   return (
@@ -32,11 +39,26 @@ export default function OrphanagesMap() {
       >
         <TileLayer url="https://a.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         {/* <TileLayer
-          url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=
-          ${process.env.REACT_APP_MAPBOX_TOKEN}`}
+          url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${REACT_APP_MAPBOX_TOKEN}`}
         /> */}
+
+        <Marker icon={mapIcon} position={[-29.6899559, -51.1480951]}>
+          <Popup
+            minWidth={240}
+            maxWidth={240}
+            closeButton={false}
+            className="map-popup"
+          >
+            <div className="wrapper">
+              <Link to="/orphanage/create" className="linke">
+                <FiArrowRight size={20} />
+              </Link>
+            </div>
+            <span>Lar das Meninas pobres</span>
+          </Popup>
+        </Marker>
       </Map>
-      <Link to="" className="create-orphanage">
+      <Link to="/orphanage/create" className="create-orphanage">
         <FiPlus size={32} color="#FFF" />
       </Link>
     </div>
