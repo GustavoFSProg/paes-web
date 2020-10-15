@@ -28,6 +28,7 @@ interface Orphanage {
   open_on_weekends: boolean
   images: Array<{
     url: string
+    id: number
   }>
 }
 
@@ -37,16 +38,17 @@ interface OrphanageParams {
 
 export default function Orphanage() {
   const { goBack } = useHistory()
-  const [orfanato, setOrfanato] = useState<Orphanage>()
+  const [orphanage, setOrphange] = useState<Orphanage>()
   const params = useParams<OrphanageParams>()
+  const [activeImageIndex, setActiveImageIndex] = useState(0)
 
   useEffect(() => {
     api.get(`/${params.id}`).then((response) => {
-      setOrfanato(response.data)
+      setOrphange(response.data)
     })
   }, [params.id])
 
-  if (!orfanato) {
+  if (!orphanage) {
     return <span>Carregando......</span>
   }
   return (
@@ -63,54 +65,34 @@ export default function Orphanage() {
 
       <main>
         <div className="orphanage-details">
-          <img src={orfanato.images[0].url} alt={orfanato.name} />
-
+          <img
+            src={orphanage?.images[activeImageIndex].url}
+            alt={orphanage?.name}
+          />
           <div className="images">
-            <button className="active" type="button">
-              <img
-                src="https://www.gcd.com.br/wp-content/uploads/2020/08/safe_image.jpg"
-                alt="Lar das meninas"
-              />
-            </button>
-            <button type="button">
-              <img
-                src="https://www.gcd.com.br/wp-content/uploads/2020/08/safe_image.jpg"
-                alt="Lar das meninas"
-              />
-            </button>
-            <button type="button">
-              <img
-                src="https://www.gcd.com.br/wp-content/uploads/2020/08/safe_image.jpg"
-                alt="Lar das meninas"
-              />
-            </button>
-            <button type="button">
-              <img
-                src="https://www.gcd.com.br/wp-content/uploads/2020/08/safe_image.jpg"
-                alt="Lar das meninas"
-              />
-            </button>
-            <button type="button">
-              <img
-                src="https://www.gcd.com.br/wp-content/uploads/2020/08/safe_image.jpg"
-                alt="Lar das meninas"
-              />
-            </button>
-            <button type="button">
-              <img
-                src="https://www.gcd.com.br/wp-content/uploads/2020/08/safe_image.jpg"
-                alt="Lar das meninas"
-              />
-            </button>
+            {orphanage?.images.map((image, index) => {
+              return (
+                <button
+                  key={image.id}
+                  className="active"
+                  type="button"
+                  onClick={() => {
+                    setActiveImageIndex(index)
+                  }}
+                >
+                  <img src={image.url} alt={orphanage.name} />
+                </button>
+              )
+            })}
           </div>
 
           <div className="orphanage-details-content">
-            <h1>{orfanato.name}</h1>
-            <p>{orfanato.about} </p>
+            <h1>{orphanage.name}</h1>
+            <p>{orphanage.about} </p>
 
             <div className="map-container">
               <Map
-                center={[orfanato.latitude, orfanato.longitude]}
+                center={[orphanage.latitude, orphanage.longitude]}
                 zoom={16}
                 style={{ width: '100%', height: 280 }}
                 dragging={false}
@@ -125,27 +107,31 @@ export default function Orphanage() {
                 <Marker
                   interactive={false}
                   icon={happyMapIcon}
-                  position={[orfanato.latitude, orfanato.longitude]}
+                  position={[orphanage.latitude, orphanage.longitude]}
                 />
               </Map>
 
               <footer>
-                <a href="">Ver rotas no Google Maps</a>
+                <a
+                  href={`https://www.google.com/maps/dir/?api=1&destination=${orphanage.latitude},${orphanage.longitude}`}
+                >
+                  Ver rotas no Google Maps
+                </a>
               </footer>
             </div>
 
             <hr />
 
             <h2>Instruções para visita</h2>
-            <p>{orfanato.instructions}</p>
+            <p>{orphanage.instructions}</p>
 
             <div className="open-details">
               <div className="hour">
                 <FiClock size={32} color="#15B6D6" />
                 Segunda à Sexta <br />
-                {orfanato.opening_hours}
+                {orphanage.opening_hours}
               </div>
-              {orfanato.open_on_weekends ? (
+              {orphanage.open_on_weekends ? (
                 <div className="open-on-weekends">
                   <FiInfo size={32} color="#39CC83" />
                   Atendemos <br />

@@ -12,7 +12,7 @@ export default function Routes() {
         <Route path="/" exact component={Landing} />
         <Route path="/app" component={OrphanagesMap} />
         <Route path="/orphanage/:id" component={Orphanage} />
-        <Route path="/orphanage/create" component={CreateOrphanage} />
+        <Route path="/orpha/create" component={CreateOrphanage} />
       </Switch>
     </BrowserRouter>
   )
