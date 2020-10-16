@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { FaImages, FaWhatsapp } from 'react-icons/fa'
+import { FaWhatsapp } from 'react-icons/fa'
 import { FiClock, FiInfo, FiArrowLeft } from 'react-icons/fi'
 import { Map, Marker, TileLayer } from 'react-leaflet'
 import { useHistory, useParams } from 'react-router-dom'
