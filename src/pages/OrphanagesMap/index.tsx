@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import './styles.css'
-import mapMarkerimg from '../../assets/map_marker.svg'
 import { Link } from 'react-router-dom'
 import { FiPlus, FiArrowRight } from 'react-icons/fi'
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
 import Leaflet from 'leaflet'
+import mapMarkerimg from '../../assets/map_marker.svg'
 import 'leaflet/dist/leaflet.css'
 import api from '../../services/api'
 // import REACT_APP_MAPBOX_TOKEN from '../../Env'
@@ -28,7 +28,7 @@ export default function OrphanagesMap() {
   const [orfanatos, setOrfanatos] = useState<Orphanage[]>([])
 
   useEffect(() => {
-    api.get('/').then((response) => {
+    api.get('/').then(response => {
       setOrfanatos(response.data)
     })
   }, [])
@@ -57,7 +57,7 @@ export default function OrphanagesMap() {
           url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
         />
 
-        {orfanatos.map((orfans) => {
+        {orfanatos.map(orfans => {
           return (
             <Marker
               icon={mapIcon}

@@ -17,7 +17,7 @@ const happyMapIcon = L.icon({
   popupAnchor: [0, -60],
 })
 
-interface Orphanage {
+interface OrphanageProps {
   id: number
   latitude: number
   longitude: number
@@ -38,12 +38,12 @@ interface OrphanageParams {
 
 export default function Orphanage() {
   const { goBack } = useHistory()
-  const [orphanage, setOrphange] = useState<Orphanage>()
+  const [orphanage, setOrphange] = useState<OrphanageProps>()
   const params = useParams<OrphanageParams>()
   const [activeImageIndex, setActiveImageIndex] = useState(0)
 
   useEffect(() => {
-    api.get(`/${params.id}`).then((response) => {
+    api.get(`/${params.id}`).then(response => {
       setOrphange(response.data)
     })
   }, [params.id])
@@ -66,8 +66,8 @@ export default function Orphanage() {
       <main>
         <div className="orphanage-details">
           <img
-            src={orphanage?.images[activeImageIndex].url}
-            alt={orphanage?.name}
+            src={orphanage.images[activeImageIndex].url}
+            alt={orphanage.name}
           />
           <div className="images">
             {orphanage?.images.map((image, index) => {

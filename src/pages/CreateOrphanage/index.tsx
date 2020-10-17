@@ -1,7 +1,8 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { FormEvent, useState, ChangeEvent } from 'react'
 import { Map, Marker, TileLayer } from 'react-leaflet'
-import { LeafletMouseEvent } from 'leaflet'
-import L from 'leaflet'
+import L, { LeafletMouseEvent } from 'leaflet'
+
 import { useHistory } from 'react-router-dom'
 
 import { FiArrowLeft, FiPlus } from 'react-icons/fi'
@@ -23,10 +24,10 @@ export default function CreateOrphanage() {
   const [position, setPosition] = useState({ latitude: 0, longitude: 0 })
   const history = useHistory()
 
-  const [name, setName] = useState('')
-  const [about, setAbout] = useState('')
-  const [opening_hours, setOpeningHours] = useState('')
-  const [instructions, setInstructions] = useState('')
+  const [name, setName] = useState('Casa Piculina')
+  const [about, setAbout] = useState('Sobre esta casa:')
+  const [opening_hours, setOpeningHours] = useState('12:00 - 18:00')
+  const [instructions, setInstructions] = useState('Inscrition')
   const [images, setImages] = useState<File[]>([])
   const [previewImages, setPreviewImages] = useState([])
   const [open_on_weekend, setOpenOnWeekend] = useState(true)
@@ -51,7 +52,7 @@ export default function CreateOrphanage() {
 
     setImages(selectedImages)
 
-    const selectedImagesPreview: any = selectedImages.map((image) => {
+    const selectedImagesPreview: any = selectedImages.map(image => {
       return URL.createObjectURL(image)
     })
     setPreviewImages(selectedImagesPreview)
@@ -59,43 +60,33 @@ export default function CreateOrphanage() {
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault()
+
+    console.log({})
+    const { latitude, longitude } = position
+
+    const data = new FormData()
+
+    data.append('name', name)
+    data.append('about', about)
+    data.append('opening_hours', opening_hours)
+    data.append('instructions', instructions)
+    data.append('latitude', String(latitude))
+    data.append('longitude', String(longitude))
+    data.append('open_on_weekend', String(open_on_weekend))
+    images.forEach(image => {
+      data.append('images', image)
+    })
+
+    console.log(data)
+
     try {
-      const { latitude, longitude } = position
-
-      const data = new FormData()
-
-      data.append('name', name)
-      data.append('about', about)
-      data.append('opening_hours', opening_hours)
-      data.append('instructions', instructions)
-      data.append('latitude', String(latitude))
-      data.append('longitude', String(longitude))
-      data.append('open_on_weekend', String(open_on_weekend))
-      images.forEach((image) => {
-        data.append('images', image)
-      })
-
-      console.log({
-        position,
-        about,
-        instructions,
-        opening_hours,
-        name,
-        latitude,
-        longitude,
-        open_on_weekend,
-      })
-
       await api.post('/orphanages', data)
 
-      console.log(data)
-
-      return alert('Cadastro realizado com sucesso!')
-
-      history.push('/app')
+      alert('Cadastro realizado com sucesso!')
+      return history.push('/app')
     } catch (error) {
       console.log(error)
-      return true
+      return alert(`Deu erro no front ${error}`)
     }
   }
 
@@ -140,7 +131,7 @@ export default function CreateOrphanage() {
               <input
                 id="name"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={e => setName(e.target.value)}
               />
             </div>
 
@@ -151,7 +142,7 @@ export default function CreateOrphanage() {
               <textarea
                 id="name"
                 value={about}
-                onChange={(e) => setAbout(e.target.value)}
+                onChange={e => setAbout(e.target.value)}
                 maxLength={300}
               />
             </div>
@@ -160,7 +151,7 @@ export default function CreateOrphanage() {
               <label htmlFor="images">Fotos</label>
 
               <div className="images-container">
-                {previewImages.map((image) => {
+                {previewImages.map(image => {
                   return <img key={image} src={image} alt="name" />
                 })}
                 <label htmlFor="image[]" className="new-image">
@@ -185,7 +176,7 @@ export default function CreateOrphanage() {
               <textarea
                 id="instructions"
                 value={instructions}
-                onChange={(e) => setInstructions(e.target.value)}
+                onChange={e => setInstructions(e.target.value)}
               />
             </div>
 
@@ -194,7 +185,7 @@ export default function CreateOrphanage() {
               <input
                 id="opening_hours"
                 value={opening_hours}
-                onChange={(e) => setOpeningHours(e.target.value)}
+                onChange={e => setOpeningHours(e.target.value)}
               />
             </div>
 
