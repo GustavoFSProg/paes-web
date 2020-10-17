@@ -30,7 +30,7 @@ export default function CreateOrphanage() {
   const [instructions, setInstructions] = useState('Inscrition')
   const [images, setImages] = useState<File[]>([])
   const [previewImages, setPreviewImages] = useState([])
-  const [open_on_weekend, setOpenOnWeekend] = useState(true)
+  const [open_on_weekends, setOpenOnWeekends] = useState(true)
 
   function handleMapClick(event: LeafletMouseEvent) {
     const { lat, lng } = event.latlng
@@ -61,7 +61,6 @@ export default function CreateOrphanage() {
   async function handleSubmit(event: FormEvent) {
     event.preventDefault()
 
-    console.log({})
     const { latitude, longitude } = position
 
     const data = new FormData()
@@ -72,12 +71,10 @@ export default function CreateOrphanage() {
     data.append('instructions', instructions)
     data.append('latitude', String(latitude))
     data.append('longitude', String(longitude))
-    data.append('open_on_weekend', String(open_on_weekend))
+    data.append('open_on_weekends', String(open_on_weekends))
     images.forEach(image => {
       data.append('images', image)
     })
-
-    console.log(data)
 
     try {
       await api.post('/orphanages', data)
@@ -108,7 +105,7 @@ export default function CreateOrphanage() {
             <legend>Dados</legend>
 
             <Map
-              center={[-27.2092052, -49.6401092]}
+              center={[-29.6899559, -51.1480951]}
               style={{ width: '100%', height: 280 }}
               zoom={15}
               onClick={handleMapClick}
@@ -195,15 +192,15 @@ export default function CreateOrphanage() {
               <div className="button-select">
                 <button
                   type="button"
-                  className={open_on_weekend ? 'active' : ''}
-                  onClick={() => setOpenOnWeekend(true)}
+                  className={open_on_weekends ? 'active' : ''}
+                  onClick={() => setOpenOnWeekends(true)}
                 >
                   Sim
                 </button>
                 <button
-                  className={!open_on_weekend ? 'active' : ''}
+                  className={!open_on_weekends ? 'active' : ''}
                   type="button"
-                  onClick={() => setOpenOnWeekend(false)}
+                  onClick={() => setOpenOnWeekends(false)}
                 >
                   Não
                 </button>
