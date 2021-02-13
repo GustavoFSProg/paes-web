@@ -72,6 +72,7 @@ export default function CreateOrphanage() {
     data.append('latitude', String(latitude))
     data.append('longitude', String(longitude))
     data.append('open_on_weekends', String(open_on_weekends))
+    data.append('status', String(false))
     images.forEach(image => {
       data.append('images', image)
     })
